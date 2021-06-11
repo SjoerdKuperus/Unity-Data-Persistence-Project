@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -44,6 +45,47 @@ public class SharedSceneDataSingleton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the point total is higher then the last highscore.
+    /// If higher, update the persistent data.
+    /// </summary>
+    public void UpdateOrIgnoreHighScore(int m_Points)
+    {
+        if(LastHighScore != null)
+        {
+            if(LastHighScore.Score < m_Points)
+            {
+                //New highscore
+                var newHighScore = new HighScore
+                {
+                    Name = PlayerName,
+                    Score = m_Points
+                };
+                LastHighScore = newHighScore;
+                SavePersitentData();
+            }
+        }
+        else
+        {
+            //First highscore
+            var firstHighScore = new HighScore
+            {
+                Name = PlayerName,
+                Score = m_Points
+            };
+            LastHighScore = firstHighScore;
+            SavePersitentData();
+        }        
+    }
+
+    public string GetLastHighScoreText()
+    {
+        if (LastHighScore == null || LastHighScore.Score == 0)
+        {
+            return "Highscore: ???";
+        }
+        return $"Highscore: {LastHighScore.Score} by {LastHighScore.Name}";
+    }
 }
 
 [System.Serializable]
@@ -53,6 +95,7 @@ public class PersistentData
     public string PlayerName;
 }
 
+[System.Serializable]
 public class HighScore
 {
     public string Name;

@@ -8,6 +8,7 @@ using UnityEditor;
 public class MenuUiController : MonoBehaviour
 {
     public InputField PlayerNameInput;
+    public Text HighScoreText;
 
     public void Start()
     {
@@ -15,6 +16,7 @@ public class MenuUiController : MonoBehaviour
         {
             PlayerNameInput.text = SharedSceneDataSingleton.Instance.PlayerName;
         }
+        HighScoreText.text = SharedSceneDataSingleton.Instance.GetLastHighScoreText();
     }
 
     public void StartNew()
